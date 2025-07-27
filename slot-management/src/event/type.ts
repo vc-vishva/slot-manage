@@ -17,10 +17,13 @@ export interface EventData {
 }
 export interface FilterData {
   isDeleted?: boolean;
-  createdAt?: {
-    $gte?: Date;
-    $lte?: Date;
-  };
+  isConformed?: boolean;
+  startDate?: string;
+  createdBy: Types.ObjectId;
+  // startDate?: {
+  //   $gte?: Date;
+  //   $lte?: Date;
+  // };
 }
 
 export interface EventExportType extends FilterData {

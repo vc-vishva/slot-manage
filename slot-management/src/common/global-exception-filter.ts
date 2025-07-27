@@ -1,9 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Inject, Logger } from '@nestjs/common';
-import { AxiosError } from 'axios';
 import { Response } from 'express';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { ResponseHandler } from '../utils/response-handler';
-import { CustomAxiosErrorResponse } from './types';
 /**
  * Global Exception Filter
  */
@@ -35,23 +33,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         .status(statusCode)
         .json(ResponseHandler.error(exception.name, exception.message, statusCode, res['error']));
     }
-
-    if (exception instanceof AxiosError) {
-      const data = exception.response?.data as CustomAxiosErrorResponse;
-
-      const statusCode = data?.statusCode || 500;
-      const message = data?.message || 'Internal server error';
-      const error = data?.error || [];
-
-      return response.status(statusCode).json({
-        status: false,
-        statusCode,
-        message,
-        data: [],
-        error,
-      });
-    }
-
     if (exception.name === 'TokenExpiredError' || exception.message === 'jwt expired') {
       return response.status(401).json({
         status: false,

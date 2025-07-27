@@ -65,14 +65,6 @@ export interface ErrorResponse {
   errors?: ErrorDetail[];
 }
 
-export interface CustomAxiosErrorResponse {
-  status: boolean;
-  statusCode: number;
-  message: string;
-  data: any[];
-  error: any[];
-}
-
 export interface ApiResStatus {
   status?: string;
   responseCode?: string;

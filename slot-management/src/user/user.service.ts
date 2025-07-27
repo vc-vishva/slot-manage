@@ -17,11 +17,7 @@ export class UserService {
     private configService: ConfigService,
     private commonService: CommonService,
   ) {}
-  /**
-   * Description - Create multiple users
-   * @param usersData Array of CreateUserDto
-   * @returns Created Users
-   */
+
   async createManyUsers(usersData: Partial<CreateUserDto>[]): Promise<Partial<UserDocument>[]> {
     const preparedUsers = await Promise.all(
       usersData.map(async (userData) => {
@@ -37,30 +33,11 @@ export class UserService {
     return this.userModel.insertMany(preparedUsers);
   }
 
-  /**
-   * Description - Get user common function
-   * @param query UserQueryObject
-   * @returns User
-   */
-  async getUserAndUpdate(query: UserQueryObject, update: object = {}): Promise<UserDocument> {
-    return this.userModel.findOneAndUpdate(query, update);
-  }
-
-  /**
-   * Description - Get user common function
-   * @param query UserQueryObject
-   * @returns User
-   */
   async getUser(query: UserQueryObject, shouldGetPassword = false): Promise<UserDocument> {
     const queryBuilder = this.userModel.findOne(query);
     return shouldGetPassword ? queryBuilder.select('+password') : queryBuilder.exec();
   }
 
-  /**
-   * Description - Get user json common function
-   * @param query UserQueryObject
-   * @returns User
-   */
   async getUserJson(query: UserQueryObject, select: object = {}): Promise<UserDocument> {
     return this.userModel.findOne(query, select).lean();
   }
